@@ -357,15 +357,15 @@ elif page == "Country Report":
 
             with col1:
                 st.markdown("**🌡️ Avg Temperature**")
-                st.markdown(f"### {avg_temp:.1f}°C")
+                st.markdown(f"#### {avg_temp:.1f}°C")
 
             with col2:
                 st.markdown("**🔥 Hottest Month**")
-                st.markdown(f"### {hottest_month}")
+                st.markdown(f"#### {hottest_month}")
 
             with col3:
                 st.markdown("**❄️ Coldest Month**")
-                st.markdown(f"### {coldest_month}")
+                st.markdown(f"#### {coldest_month}")
 
             with col4:
                 st.markdown("**📈 Warming Trend**")
