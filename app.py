@@ -21,7 +21,53 @@ try:
 except Exception as e:
     st.error(f"Data loading error: {e}")
     st.stop()
+try:
+    st.set_page_config(
+        page_title="Climate Change AI Agent",
+        page_icon="🌍",
+        layout="wide"
+    )
+    st.success("Page config done! ✅")
+except Exception as e:
+    st.error(f"Page config error: {e}")
+    st.stop()
+
+try:
+    @st.cache_data
+    def load_data():
+        df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
+        df.dropna(inplace=True)
+        return df
+
+    @st.cache_resource
+    def train_model(df):
+        le = LabelEncoder()
+        le.fit(df["Country"])
+        X = df[["Country_Encoded", "Year", "Month"]]
+        y = df["AverageTemperature"]
+        model = RandomForestRegressor(
+            n_estimators=50,
+            random_state=42,
+            n_jobs=-1
+        )
+        model.fit(X, y)
+        return model, le
+
+    df = load_data()
+    model, le = train_model(df)
+    st.success("Model trained! ✅")
+except Exception as e:
+    st.error(f"Model training error: {e}")
+    st.stop()
+
+try:
+    groq_client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+    st.success("Groq client ready! ✅")
+except Exception as e:
+    st.error(f"Groq error: {e}")
+    st.stop()
     
+      
 import streamlit as st
 import pandas as pd
 import plotly.express as px
