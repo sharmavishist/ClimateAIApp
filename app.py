@@ -22,18 +22,22 @@ def load_data():
     df.dropna(inplace=True)
     return df
 
-# train model
 @st.cache_resource
 def train_model():
     df = load_data()
     le = LabelEncoder()
-    le.fit(df["Country"])
-    X = df[["Country_Encoded", "Year", "Month"]]
-    y = df["AverageTemperature"]
+    le.fit(df['Country'])
+    
+    # use smaller sample to reduce memory on free tier
+    df_sample = df.sample(n=50000, random_state=42)  # use 50k rows instead of 544k
+    
+    X = df_sample[["Country_Encoded", "Year", "Month"]]
+    y = df_sample["AverageTemperature"]
+    
     model = RandomForestRegressor(
-        n_estimators=50,
+        n_estimators=20,   # reduced for memory
         random_state=42,
-        n_jobs=-1
+        n_jobs=1           # single core on free tier
     )
     model.fit(X, y)
     return model, le
