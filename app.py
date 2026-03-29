@@ -13,28 +13,9 @@ warnings.filterwarnings("ignore")
 st.set_page_config(
     page_title="Climate Change AI Agent",
     #page_icon="🌍",
-    layout="wide"
-)
-'''
-@st.cache_data
-def load_data():
-    df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
-    df.dropna(inplace=True)
-    return df
-
-# load model from pkl file
-@st.cache_resource
-def load_model():
-    model = joblib.load("climate_model.pkl")   # load pretrained model
-    le = joblib.load("label_encoder.pkl")       # load label encoder
-    return model, le
-
-# load everything
-df = load_data()
-model, le = load_model()'''
+    layout="wide")
 
 # load data
-
 @st.cache_data
 def load_data():
     df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
