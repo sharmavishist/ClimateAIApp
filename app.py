@@ -347,13 +347,14 @@ elif page == "Country Report":
                 warming_text = f"{warming:.2f}°C since 1900"
             else:
                 warming_text = "Not available (limited data)"
-'''
-            col1, col2, col3, col4 = st.columns(4)
+
+            '''col1, col2, col3, col4 = st.columns(4)
             col1.metric("Avg Temperature", f"{avg_temp:.1f}°C")
             col2.metric("Hottest Month", hottest_month)
             col3.metric("Coldest Month", coldest_month)
             col4.metric("Warming Trend", warming_text)'''
             col1, col2, col3, col4 = st.columns(4)
+
             with col1:
                 st.markdown("**🌡️ Avg Temperature**")
                 st.markdown(f"### {avg_temp:.1f}°C")
@@ -368,7 +369,7 @@ elif page == "Country Report":
 
             with col4:
                 st.markdown("**📈 Warming Trend**")
-                st.markdown(f"**{warming_text}**") 
+                st.markdown(f"**{warming_text}**")
 
             report_prompt = f"""
             Generate a professional climate analysis report for {country}.
