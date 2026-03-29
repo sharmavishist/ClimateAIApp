@@ -64,7 +64,7 @@ def train_model():
 # load everything
 df = load_data()
 model, le = train_model()
-'''
+
 
 # setup Groq client
 groq_client = Groq(api_key=st.secrets["GROQ_API_KEY"])
