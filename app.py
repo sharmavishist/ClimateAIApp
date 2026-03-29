@@ -76,11 +76,30 @@ if page == "Dashboard":
     st.title("🌍 Climate Change Dashboard")
     st.markdown("Explore 270 years of real climate data across 204 countries")
 
-    col1, col2, col3, col4 = st.columns(4)
+    '''col1, col2, col3, col4 = st.columns(4)
     col1.metric("Total Countries", df['Country'].nunique())
     col2.metric("Global Avg Temp", f"{df['AverageTemperature'].mean():.2f}°C")
     col3.metric("Data Range", f"{int(df['Year'].min())} - {int(df['Year'].max())}")
-    col4.metric("Total Records", f"{len(df):,}")
+    col4.metric("Total Records", f"{len(df):,}") 
+    '''
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.markdown("**🌡️ Avg Temperature**")
+        st.markdown(f"### {avg_temp:.1f}°C")
+
+    with col2:
+        st.markdown("**🔥 Hottest Month**")
+        st.markdown(f"### {hottest_month}")
+
+    with col3:
+        st.markdown("**❄️ Coldest Month**")
+        st.markdown(f"### {coldest_month}")
+
+    with col4:
+        st.markdown("**📈 Warming Trend**")
+        st.markdown(f"**{warming_text}**")
 
     st.markdown("---")
 
