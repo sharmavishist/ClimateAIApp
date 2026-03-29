@@ -1,4 +1,28 @@
 import streamlit as st
+
+try:
+    import pandas as pd
+    import plotly.express as px
+    import plotly.graph_objects as go
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.preprocessing import LabelEncoder
+    from groq import Groq
+    import warnings
+    warnings.filterwarnings("ignore")
+    st.success("Libraries imported! ✅")
+except Exception as e:
+    st.error(f"Library import error: {e}")
+    st.stop()
+
+try:
+    df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
+    df.dropna(inplace=True)
+    st.success(f"Data loaded! {df.shape} ✅")
+except Exception as e:
+    st.error(f"Data loading error: {e}")
+    st.stop()
+    
+import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
