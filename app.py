@@ -290,12 +290,20 @@ elif page == "Temperature Predictor":
             historical = df[
                 (df['Country'] == country) &
                 (df['Month'] == month_num)
-            ]['AverageTemperature'].mean()
+            ]['AverageTemperature'].mean() # define expected model error (MAE)
+            mae = 0.9  # replace with your model’s actual MAE if known
 
             col1, col2 = st.columns(2)
-            col1.metric("Predicted Temperature", f"{predicted_temp:.1f}°C")
-            col2.metric("Historical Average", f"{historical:.1f}°C",
-                       delta=f"{predicted_temp - historical:.1f}°C")
+            col1.metric(
+                "Predicted Temperature",
+                f"{predicted_temp:.1f}°C ± {mae:.1f}°C"  # shows uncertainty
+            )
+            col2.metric(
+                "Historical Average",
+                f"{historical:.1f}°C",
+                delta=f"{predicted_temp - historical:.1f}°C ± {mae:.1f}°C"  # optional: include uncertainty
+            )
+            st.caption(f"⚠️ Predicted temperature includes expected model uncertainty (±{mae:.1f}°C)")
 
             with st.spinner("Getting AI explanation..."):
                 explanation_prompt = f"""
