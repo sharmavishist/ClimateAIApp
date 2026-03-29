@@ -15,13 +15,16 @@ st.set_page_config(
     layout="wide"
 )
 
+# load model from pkl file
+@st.cache_resource
+def load_model():
+    model = joblib.load("climate_model.pkl")   # load pretrained model
+    le = joblib.load("label_encoder.pkl")       # load label encoder
+    return model, le
+
 # load everything
 df = load_data()
-
-# load pre-trained model and label encoder directly
-import joblib
-model = joblib.load("climate_model.pkl")
-le = joblib.load("label_encoder.pkl")
+model, le = load_model()
 
 # load data
 '''
