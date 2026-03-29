@@ -369,7 +369,7 @@ elif page == "Country Report":
 
             with col4:
                 st.markdown("**📈 Warming Trend**")
-                st.markdown(f"**{warming_text}**")
+                st.markdown(f"#### {warming_text}")
 
             report_prompt = f"""
             Generate a professional climate analysis report for {country}.
