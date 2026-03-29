@@ -15,7 +15,7 @@ st.set_page_config(
     #page_icon="🌍",
     layout="wide"
 )
-
+'''
 @st.cache_data
 def load_data():
     df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
@@ -31,39 +31,39 @@ def load_model():
 
 # load everything
 df = load_data()
-model, le = load_model()
+model, le = load_model()'''
 
 # load data
 
-#@st.cache_data
-#def load_data():
-#    df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
-#    df.dropna(inplace=True)
-#    return df
+@st.cache_data
+def load_data():
+    df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
+    df.dropna(inplace=True)
+    return df
 
-#@st.cache_resource
-#def train_model():
-#    df = load_data()
-#    le = LabelEncoder()
-#    le.fit(df['Country'])
+@st.cache_resource
+def train_model():
+    df = load_data()
+    le = LabelEncoder()
+    le.fit(df['Country'])
     
     # use smaller sample to reduce memory on free tier
-#    df_sample = df.sample(n=50000, random_state=42)  # use 50k rows instead of 544k
+    df_sample = df.sample(n=50000, random_state=42)  # use 50k rows instead of 544k
     
-#    X = df_sample[["Country_Encoded", "Year", "Month"]]
-#    y = df_sample["AverageTemperature"]
+    X = df_sample[["Country_Encoded", "Year", "Month"]]
+    y = df_sample["AverageTemperature"]
     
-#    model = RandomForestRegressor(
-#        n_estimators=20,   # reduced for memory
-#        random_state=42,
-#        n_jobs=1           # single core on free tier
-#    )
-#    model.fit(X, y)
-#    return model, le
+    model = RandomForestRegressor(
+        n_estimators=20,   # reduced for memory
+        random_state=42,
+        n_jobs=1           # single core on free tier
+    )
+    model.fit(X, y)
+    return model, le
 
 # load everything
-#df = load_data()
-#model, le = train_model()
+df = load_data()
+model, le = train_model()
 '''
 
 # setup Groq client
