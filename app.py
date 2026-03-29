@@ -34,36 +34,36 @@ df = load_data()
 model, le = load_model()
 
 # load data
-'''
-@st.cache_data
-def load_data():
-    df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
-    df.dropna(inplace=True)
-    return df
 
-@st.cache_resource
-def train_model():
-    df = load_data()
-    le = LabelEncoder()
-    le.fit(df['Country'])
+#@st.cache_data
+#def load_data():
+#    df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
+#    df.dropna(inplace=True)
+#    return df
+
+#@st.cache_resource
+#def train_model():
+#    df = load_data()
+#    le = LabelEncoder()
+#    le.fit(df['Country'])
     
     # use smaller sample to reduce memory on free tier
-    df_sample = df.sample(n=50000, random_state=42)  # use 50k rows instead of 544k
+#    df_sample = df.sample(n=50000, random_state=42)  # use 50k rows instead of 544k
     
-    X = df_sample[["Country_Encoded", "Year", "Month"]]
-    y = df_sample["AverageTemperature"]
+#    X = df_sample[["Country_Encoded", "Year", "Month"]]
+#    y = df_sample["AverageTemperature"]
     
-    model = RandomForestRegressor(
-        n_estimators=20,   # reduced for memory
-        random_state=42,
-        n_jobs=1           # single core on free tier
-    )
-    model.fit(X, y)
-    return model, le
+#    model = RandomForestRegressor(
+#        n_estimators=20,   # reduced for memory
+#        random_state=42,
+#        n_jobs=1           # single core on free tier
+#    )
+#    model.fit(X, y)
+#    return model, le
 
 # load everything
-df = load_data()
-model, le = train_model()
+#df = load_data()
+#model, le = train_model()
 '''
 
 # setup Groq client
@@ -290,20 +290,12 @@ elif page == "Temperature Predictor":
             historical = df[
                 (df['Country'] == country) &
                 (df['Month'] == month_num)
-            ]['AverageTemperature'].mean() # define expected model error (MAE)
-            mae = 0.9  # replace with your model’s actual MAE if known
+            ]['AverageTemperature'].mean()
 
             col1, col2 = st.columns(2)
-            col1.metric(
-                "Predicted Temperature",
-                f"{predicted_temp:.1f}°C ± {mae:.1f}°C"  # shows uncertainty
-            )
-            col2.metric(
-                "Historical Average",
-                f"{historical:.1f}°C",
-                delta=f"{predicted_temp - historical:.1f}°C ± {mae:.1f}°C"  # optional: include uncertainty
-            )
-            st.caption(f"⚠️ Predicted temperature includes expected model uncertainty (±{mae:.1f}°C)")
+            col1.metric("Predicted Temperature", f"{predicted_temp:.1f}°C")
+            col2.metric("Historical Average", f"{historical:.1f}°C",
+                       delta=f"{predicted_temp - historical:.1f}°C")
 
             with st.spinner("Getting AI explanation..."):
                 explanation_prompt = f"""
