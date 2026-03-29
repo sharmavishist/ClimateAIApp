@@ -11,7 +11,7 @@ warnings.filterwarnings("ignore")
 # page config MUST be first streamlit command
 st.set_page_config(
     page_title="Climate Change AI Agent",
-    page_icon="🌍",
+    #page_icon="🌍",
     layout="wide"
 )
 
@@ -53,7 +53,7 @@ groq_client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 # SIDEBAR NAVIGATION
 # ─────────────────────────────────────────
 
-st.sidebar.title("🌍 Climate AI Agent")
+st.sidebar.title("Climate AI Agent")
 st.sidebar.markdown("---")
 
 page = st.sidebar.radio(
@@ -73,7 +73,7 @@ st.sidebar.markdown(f"Records: {len(df):,}")
 
 if page == "Dashboard":
 
-    st.title("🌍 Climate Change Dashboard")
+    st.title("Climate Change Dashboard")
     st.markdown("Explore 270 years of real climate data across 204 countries")
 
     col1, col2, col3, col4 = st.columns(4)
@@ -85,7 +85,7 @@ if page == "Dashboard":
 
     st.markdown("---")
 
-    st.subheader("🌡️ Global Temperature Trend Over Years")
+    st.subheader("Global Temperature Trend Over Years")
     yearly_avg = df.groupby("Year")["AverageTemperature"].mean().reset_index()
     fig1 = px.line(
         yearly_avg, x="Year", y="AverageTemperature",
@@ -100,7 +100,7 @@ if page == "Dashboard":
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("🔥 Top 10 Hottest Countries")
+        st.subheader("Top 10 Hottest Countries")
         hottest = df.groupby("Country")["AverageTemperature"].mean().sort_values(ascending=False).head(10).reset_index()
         fig2 = px.bar(
             hottest, x="AverageTemperature", y="Country",
@@ -112,7 +112,7 @@ if page == "Dashboard":
         st.plotly_chart(fig2, use_container_width=True)
 
     with col2:
-        st.subheader("❄️ Top 10 Coldest Countries")
+        st.subheader("Top 10 Coldest Countries")
         coldest = df.groupby("Country")["AverageTemperature"].mean().sort_values().head(10).reset_index()
         fig3 = px.bar(
             coldest, x="AverageTemperature", y="Country",
@@ -128,7 +128,7 @@ if page == "Dashboard":
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("🍂 Temperature by Season")
+        st.subheader("Temperature by Season")
         season_avg = df.groupby("Season")["AverageTemperature"].mean().reset_index()
         fig4 = px.bar(
             season_avg, x="Season", y="AverageTemperature",
@@ -143,7 +143,7 @@ if page == "Dashboard":
         st.plotly_chart(fig4, use_container_width=True)
 
     with col2:
-        st.subheader("📅 Monthly Temperature Pattern")
+        st.subheader("Monthly Temperature Pattern")
         monthly_avg = df.groupby("Month")["AverageTemperature"].mean().reset_index()
         monthly_avg["Month Name"] = monthly_avg["Month"].map({
             1:"Jan", 2:"Feb", 3:"Mar", 4:"Apr",
@@ -177,7 +177,7 @@ if page == "Dashboard":
 
 elif page == "Climate Chatbot":
 
-    st.title("🤖 Climate Chatbot")
+    st.title("Climate Chatbot")
     st.markdown("Ask any general question about the climate dataset!")
 
     st.info("""
@@ -234,7 +234,7 @@ elif page == "Climate Chatbot":
 
 elif page == "Temperature Predictor":
 
-    st.title("🌡️ Temperature Predictor")
+    st.title("Temperature Predictor")
     st.markdown("Predict temperature for any country using our ML model!")
 
     col1, col2, col3 = st.columns(3)
@@ -297,7 +297,7 @@ elif page == "Temperature Predictor":
                 st.info("**AI Explanation:**")
                 st.write(response.choices[0].message.content)
 
-            st.subheader(f"📈 Historical Temperature Trend for {country}")
+            st.subheader(f"Historical Temperature Trend for {country}")
             country_yearly = df[df['Country'] == country].groupby('Year')['AverageTemperature'].mean().reset_index()
             fig = px.line(
                 country_yearly, x="Year", y="AverageTemperature",
@@ -313,7 +313,7 @@ elif page == "Temperature Predictor":
 
 elif page == "Country Report":
 
-    st.title("📄 Country Climate Report")
+    st.title("Country Climate Report")
     st.markdown("Generate a full AI climate report for any country!")
 
     country = st.selectbox("Select Country:", sorted(df['Country'].unique()))
@@ -393,7 +393,7 @@ elif page == "Country Report":
             st.success("**AI Generated Report:**")
             st.write(response.choices[0].message.content)
 
-            st.subheader(f"📈 Temperature Trend for {country}")
+            st.subheader(f"Temperature Trend for {country}")
             country_yearly = df[df['Country'] == country].groupby('Year')['AverageTemperature'].mean().reset_index()
             fig = px.line(
                 country_yearly, x="Year", y="AverageTemperature",
@@ -402,7 +402,7 @@ elif page == "Country Report":
             )
             st.plotly_chart(fig, use_container_width=True)
 
-            st.subheader(f"📅 Monthly Pattern for {country}")
+            st.subheader(f"Monthly Pattern for {country}")
             country_monthly = country_data.groupby('Month')['AverageTemperature'].mean().reset_index()
             country_monthly['Month Name'] = country_monthly['Month'].map(month_names)
             fig2 = px.bar(
