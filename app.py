@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 from groq import Groq
+import joblib
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -14,6 +15,12 @@ st.set_page_config(
     #page_icon="🌍",
     layout="wide"
 )
+
+@st.cache_data
+def load_data():
+    df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
+    df.dropna(inplace=True)
+    return df
 
 # load model from pkl file
 @st.cache_resource
