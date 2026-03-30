@@ -260,58 +260,112 @@ elif page == "Temperature Predictor":
         ], format_func=lambda x: x[1])
 
     if st.button("Predict Temperature"):
-        with st.spinner("Predicting..."):
+    with st.spinner("Processing..."):
 
-            month_num = month[0]
+        month_num = month[0]
+
+        # check if year is in dataset range
+        if year <= 2013:
+            # fetch ACTUAL data from dataset
+            actual_data = df[
+                (df['Country'] == country) &
+                (df['Month'] == month_num) &
+                (df['Year'] == year)
+            ]['AverageTemperature']
+
+            if len(actual_data) > 0:
+                # actual data exists for this year
+                temperature = actual_data.values[0]
+                data_type = "Actual Historical Data"
+                delta_label = "From dataset"
+            else:
+                # year <= 2013 but no data for this country/month/year
+                # fall back to average
+                temperature = df[
+                    (df['Country'] == country) &
+                    (df['Month'] == month_num)
+                ]['AverageTemperature'].mean()
+                data_type = "Historical Average"
+                delta_label = "No exact record found"
+        else:
+            # year > 2013 — use ML model to predict
             country_encoded = le.transform([country])[0]
-
             input_data = pd.DataFrame({
                 'Country_Encoded': [country_encoded],
                 'Year': [year],
                 'Month': [month_num]
             })
+            temperature = model.predict(input_data)[0]
+            data_type = "ML Prediction"
+            delta_label = "Future prediction"
 
-            predicted_temp = model.predict(input_data)[0]
+        # get historical average for comparison
+        historical = df[
+            (df['Country'] == country) &
+            (df['Month'] == month_num)
+        ]['AverageTemperature'].mean()
 
-            historical = df[
-                (df['Country'] == country) &
-                (df['Month'] == month_num)
-            ]['AverageTemperature'].mean()
+        # show results
+        st.markdown(f"### Data Type: `{data_type}`")
+        col1, col2 = st.columns(2)
+        col1.metric(
+            "Temperature",
+            f"{temperature:.1f}°C",
+            delta=delta_label
+        )
+        col2.metric(
+            "Historical Average",
+            f"{historical:.1f}°C",
+            delta=f"{temperature - historical:.1f}°C vs average"
+        )
 
-            col1, col2 = st.columns(2)
-            col1.metric("Predicted Temperature", f"{predicted_temp:.1f}°C")
-            col2.metric("Historical Average", f"{historical:.1f}°C",
-                       delta=f"{predicted_temp - historical:.1f}°C")
+        # get AI explanation
+        with st.spinner("Getting AI explanation..."):
+            explanation_prompt = f"""
+            You are a climate expert. Explain this temperature data:
+            Country: {country}
+            Month: {month[1]}
+            Year: {year}
+            Temperature: {temperature:.1f}°C
+            Data type: {data_type}
+            Historical average for this month: {historical:.1f}°C
 
-            with st.spinner("Getting AI explanation..."):
-                explanation_prompt = f"""
-                You are a climate expert. Explain this ML temperature prediction briefly:
-                Country: {country}
-                Month: {month[1]}
-                Year: {year}
-                Predicted Temperature: {predicted_temp:.1f}°C
-                Historical Average: {historical:.1f}°C
-                Give a brief 3-4 sentence explanation.
-                """
+            If this is actual historical data, explain what was
+            happening climatically in {country} in {year}.
+            If this is a future ML prediction, explain what
+            factors might influence this temperature.
+            Give a brief 3-4 sentence explanation.
+            """
 
-                response = groq_client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
-                    messages=[{"role": "user", "content": explanation_prompt}],
-                    max_tokens=300
-                )
-
-                st.info("**AI Explanation:**")
-                st.write(response.choices[0].message.content)
-
-            st.subheader(f"Historical Temperature Trend for {country}")
-            country_yearly = df[df['Country'] == country].groupby('Year')['AverageTemperature'].mean().reset_index()
-            fig = px.line(
-                country_yearly, x="Year", y="AverageTemperature",
-                color_discrete_sequence=["steelblue"]
+            response = groq_client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[{"role": "user", "content": explanation_prompt}],
+                max_tokens=300
             )
-            fig.add_hline(y=predicted_temp, line_dash="dash",
-                         line_color="red", annotation_text="Predicted")
-            st.plotly_chart(fig, use_container_width=True)
+
+            st.info("**AI Explanation:**")
+            st.write(response.choices[0].message.content)
+
+        # show historical trend chart
+        st.subheader(f"📈 Historical Temperature Trend for {country}")
+        country_yearly = df[
+            df['Country'] == country
+        ].groupby('Year')['AverageTemperature'].mean().reset_index()
+
+        fig = px.line(
+            country_yearly, x="Year", y="AverageTemperature",
+            color_discrete_sequence=["steelblue"]
+        )
+
+        # add marker for selected year
+        fig.add_vline(
+            x=year,
+            line_dash="dash",
+            line_color="red",
+            annotation_text=f"{year} ({temperature:.1f}°C)"
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
 
 # ─────────────────────────────────────────
 # PAGE 4 — COUNTRY REPORT
