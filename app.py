@@ -32,13 +32,13 @@ def load_model():
         with st.spinner("Loading trained ML model..."):
             # download climate model from Google Drive
             gdown.download(
-                id="1M17J26z3pVdmkB3hygwToyCz-UYAdMsB",
+                id="1M17J26z3pVdmkB3hygwToyCz-UYAdMsB", #Gdrive file ID for climate_model.pkl
                 output="climate_model.pkl",
                 quiet=False
             )
             # download label encoder from Google Drive
             gdown.download(
-                id="1I9ZzkS8LhhOJmt9f51LWJl-HVtyONMGz",
+                id="1I9ZzkS8LhhOJmt9f51LWJl-HVtyONMGz", #Gdrive file ID for label_encoder.pkl
                 output="label_encoder.pkl",
                 quiet=False
             )
@@ -114,7 +114,7 @@ if page == "Dashboard":
             color="AverageTemperature",
             color_continuous_scale="Reds"
         )
-        fig2.update_layout(yaxis=dict(autorange="reversed"))
+        fig2.update_layout(yaxis=dict(autorange="reversed"),height = 500)
         st.plotly_chart(fig2, use_container_width=True)
 
     with col2:
@@ -126,7 +126,7 @@ if page == "Dashboard":
             color="AverageTemperature",
             color_continuous_scale="Blues_r"
         )
-        fig3.update_layout(yaxis=dict(autorange="reversed"))
+        fig3.update_layout(yaxis=dict(autorange="reversed"),height = 500)
         st.plotly_chart(fig3, use_container_width=True)
 
     st.markdown("---")
