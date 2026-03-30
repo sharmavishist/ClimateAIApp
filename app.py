@@ -7,6 +7,8 @@ from sklearn.preprocessing import LabelEncoder
 from groq import Groq
 import joblib
 import warnings
+import os
+import requests
 warnings.filterwarnings("ignore")
 
 # page config MUST be first streamlit command
@@ -22,8 +24,6 @@ def load_data():
     df.dropna(inplace=True)
     return df
 
-import os
-import requests
 @st.cache_resource
 def load_model():
     if not os.path.exists("climate_model.pkl"):
