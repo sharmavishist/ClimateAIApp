@@ -22,29 +22,34 @@ def load_data():
     df.dropna(inplace=True)
     return df
 
+import os
+import requests
 @st.cache_resource
-def train_model():
-    df = load_data()
-    le = LabelEncoder()
-    le.fit(df['Country'])
+def load_model():
+    if not os.path.exists("climate_model.pkl"):
+        with st.spinner("Loading trained ML model..."):
+            
+            # download model from GitHub LFS
+            url = "https://media.githubusercontent.com/media/sharmavishist/ClimateAIApp/main/climate_model.pkl"
+            response = requests.get(url, stream=True)
+            with open("climate_model.pkl", "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            
+            # download label encoder
+            url_le = "https://media.githubusercontent.com/media/sharmavishist/ClimateAIApp/main/label_encoder.pkl"
+            response_le = requests.get(url_le, stream=True)
+            with open("label_encoder.pkl", "wb") as f:
+                for chunk in response_le.iter_content(chunk_size=8192):
+                    f.write(chunk)
     
-    # use smaller sample to reduce memory on free tier
-    df_sample = df.sample(n=50000, random_state=42)  # use 50k rows instead of 544k
-    
-    X = df_sample[["Country_Encoded", "Year", "Month"]]
-    y = df_sample["AverageTemperature"]
-    
-    model = RandomForestRegressor(
-        n_estimators=20,   # reduced for memory
-        random_state=42,
-        n_jobs=1           # single core on free tier
-    )
-    model.fit(X, y)
+    # load our actual Colab trained model
+    model = joblib.load("climate_model.pkl")
+    le = joblib.load("label_encoder.pkl")
     return model, le
 
-# load everything
 df = load_data()
-model, le = train_model()
+model, le = load_model()
 
 
 # setup Groq client
