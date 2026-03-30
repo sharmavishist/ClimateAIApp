@@ -8,7 +8,9 @@ from groq import Groq
 import joblib
 import warnings
 import os
+import gdown
 import requests
+
 warnings.filterwarnings("ignore")
 
 # page config MUST be first streamlit command
@@ -28,22 +30,19 @@ def load_data():
 def load_model():
     if not os.path.exists("climate_model.pkl"):
         with st.spinner("Loading trained ML model..."):
-            
-            # download model from GitHub LFS
-            url = "https://media.githubusercontent.com/media/sharmavishist/ClimateAIApp/main/climate_model.pkl"
-            response = requests.get(url, stream=True)
-            with open("climate_model.pkl", "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
-            
-            # download label encoder
-            url_le = "https://media.githubusercontent.com/media/sharmavishist/ClimateAIApp/main/label_encoder.pkl"
-            response_le = requests.get(url_le, stream=True)
-            with open("label_encoder.pkl", "wb") as f:
-                for chunk in response_le.iter_content(chunk_size=8192):
-                    f.write(chunk)
+            # download model — no login needed!
+            gdown.download(
+                id="1M17J26z3pVdmkB3hygwToyCz-UYAdMsB",
+                output="climate_model.pkl",
+                quiet=False
+            )
+            # download encoder
+            gdown.download(
+                id="1I9ZzkS8LhhOJmt9f51LWJl-HVtyONMGz",
+                output="label_encoder.pkl",
+                quiet=False
+            )
     
-    # load our actual Colab trained model
     model = joblib.load("climate_model.pkl")
     le = joblib.load("label_encoder.pkl")
     return model, le

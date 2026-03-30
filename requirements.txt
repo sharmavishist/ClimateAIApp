@@ -5,3 +5,4 @@ groq
 plotly
 numpy
 joblib
+gdown
