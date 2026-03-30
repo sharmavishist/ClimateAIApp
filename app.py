@@ -30,19 +30,20 @@ def load_data():
 def load_model():
     if not os.path.exists("climate_model.pkl"):
         with st.spinner("Loading trained ML model..."):
-            # download model — no login needed!
+            # download climate model from Google Drive
             gdown.download(
                 id="1M17J26z3pVdmkB3hygwToyCz-UYAdMsB",
                 output="climate_model.pkl",
                 quiet=False
             )
-            # download encoder
+            # download label encoder from Google Drive
             gdown.download(
                 id="1I9ZzkS8LhhOJmt9f51LWJl-HVtyONMGz",
                 output="label_encoder.pkl",
                 quiet=False
             )
     
+    # load our actual Colab trained model
     model = joblib.load("climate_model.pkl")
     le = joblib.load("label_encoder.pkl")
     return model, le
