@@ -80,7 +80,7 @@ st.sidebar.markdown(f"Records: {len(df):,}")
 if page == "Dashboard":
 
     st.title("Climate Change Dashboard")
-    st.markdown("Explore 270 years of real climate data across 204 countries")
+    st.markdown("Explore 270 years of real climate data across 242 countries")
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Total Countries", df['Country'].nunique())
