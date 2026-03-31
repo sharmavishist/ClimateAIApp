@@ -114,7 +114,7 @@ if page == "Dashboard":
             color="AverageTemperature",
             color_continuous_scale="Reds"
         )
-        fig2.update_layout(yaxis=dict(autorange="reversed"))
+        fig2.update_layout(yaxis=dict(autorange="reversed"),height=500)
         st.plotly_chart(fig2, use_container_width=True)
 
     with col2:
@@ -126,7 +126,7 @@ if page == "Dashboard":
             color="AverageTemperature",
             color_continuous_scale="Blues_r"
         )
-        fig3.update_layout(yaxis=dict(autorange="reversed"))
+        fig3.update_layout(yaxis=dict(autorange="reversed"),height=500)
         st.plotly_chart(fig3, use_container_width=True)
 
     st.markdown("---")
