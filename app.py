@@ -347,7 +347,7 @@ elif page == "Temperature Predictor":
                 st.write(response.choices[0].message.content)
 
             # show historical trend chart
-            st.subheader(f"📈 Historical Temperature Trend for {country}")
+            st.subheader(f" Historical Temperature Trend for {country}")
             country_yearly = df[
                 df['Country'] == country
             ].groupby('Year')['AverageTemperature'].mean().reset_index()
@@ -373,7 +373,7 @@ elif page == "Temperature Predictor":
 
 elif page == "Country Report":
 
-    st.title("📄 Country Climate Report")
+    st.title(" Country Climate Report")
     st.markdown("Generate a full AI climate report for any country!")
 
     # country selection
@@ -456,25 +456,25 @@ elif page == "Country Report":
             col1, col2, col3, col4 = st.columns(4)
 
             with col1:
-                st.markdown("**🌡️ Avg Temperature**")
+                st.markdown("** Avg Temperature**")
                 st.markdown(f"### {avg_temp:.1f}°C")
 
             with col2:
-                st.markdown("**🔥 Hottest Month**")
+                st.markdown("** Hottest Month**")
                 st.markdown(f"### {hottest_month}")
 
             with col3:
-                st.markdown("**❄️ Coldest Month**")
+                st.markdown("** Coldest Month**")
                 st.markdown(f"### {coldest_month}")
 
             with col4:
-                st.markdown("**📈 Warming Trend**")
+                st.markdown("** Warming Trend**")
                 st.markdown(f"#### {warming_text}")
 
             st.markdown("---")
 
             # ── LINE CHART ──
-            st.subheader(f"📈 Temperature Trend for {country} ({year_range[0]} - {year_range[1]})")
+            st.subheader(f" Temperature Trend for {country} ({year_range[0]} - {year_range[1]})")
 
             # group by year for line chart
             country_yearly = country_data.groupby('Year')['AverageTemperature'].mean().reset_index()
@@ -513,13 +513,13 @@ elif page == "Country Report":
 
             # ── MIN MAX INFO ──
             st.markdown("---")
-            st.subheader("🌡️ Temperature Extremes")
+            st.subheader(" Temperature Extremes")
 
             col1, col2 = st.columns(2)
 
             with col1:
                 st.error(f"""
-                **🔥 Highest Temperature**
+                ** Highest Temperature**
                 - Temperature: **{max_temp:.1f}°C**
                 - Year: **{max_temp_year}**
                 - Month: **{month_names[max_temp_month]}**
@@ -527,7 +527,7 @@ elif page == "Country Report":
 
             with col2:
                 st.info(f"""
-                **❄️ Lowest Temperature**
+                ** Lowest Temperature**
                 - Temperature: **{min_temp:.1f}°C**
                 - Year: **{min_temp_year}**
                 - Month: **{month_names[min_temp_month]}**
@@ -536,7 +536,7 @@ elif page == "Country Report":
             st.markdown("---")
 
             # ── AI REPORT ──
-            st.subheader("🤖 AI Climate Analysis")
+            st.subheader(" AI Climate Analysis")
 
             report_prompt = f"""
             Generate a professional climate analysis report for {country}.
@@ -573,7 +573,7 @@ elif page == "Country Report":
 
             # ── MONTHLY PATTERN CHART ──
             st.markdown("---")
-            st.subheader(f"📅 Monthly Pattern for {country}")
+            st.subheader(f" Monthly Pattern for {country}")
             country_monthly = country_data.groupby('Month')['AverageTemperature'].mean().reset_index()
             country_monthly['Month Name'] = country_monthly['Month'].map(month_names)
             fig2 = px.bar(
