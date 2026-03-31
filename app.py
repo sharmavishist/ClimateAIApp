@@ -11,6 +11,14 @@ import os
 import gdown
 warnings.filterwarnings("ignore")
 
+st.markdown("""
+<style>
+a.anchor-link {
+    display: none;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # page config MUST be first streamlit command
 st.set_page_config(
     page_title="Climate Change AI Agent",
