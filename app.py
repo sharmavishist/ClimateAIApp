@@ -22,7 +22,7 @@ st.set_page_config(
 # load data
 @st.cache_data
 def load_data():
-    df = pd.read_csv("cleaned_GlobalLandTemperaturesByCountry.csv")
+    df = pd.read_csv("climate_predictions_final.csv")
     df.dropna(inplace=True)
     return df
 
@@ -32,13 +32,13 @@ def load_model():
         with st.spinner("Loading trained ML model..."):
             # download climate model from Google Drive
             gdown.download(
-                id="1M17J26z3pVdmkB3hygwToyCz-UYAdMsB", #Gdrive file ID for climate_model.pkl
+                id="1ZOG--r3A0BVyQzWZ1HdkjB9_6iPN9-fi",#Gdrive file ID for climate_model.pkl
                 output="climate_model.pkl",
                 quiet=False
             )
             # download label encoder from Google Drive
             gdown.download(
-                id="1I9ZzkS8LhhOJmt9f51LWJl-HVtyONMGz", #Gdrive file ID for label_encoder.pkl
+                id="1fpV7WXfTgwR8X8bi1_z4JaQziUkeMcHh", #Gdrive file ID for label_encoder.pkl
                 output="label_encoder.pkl",
                 quiet=False
             )
@@ -80,7 +80,7 @@ st.sidebar.markdown(f"Records: {len(df):,}")
 if page == "Dashboard":
 
     st.title("Climate Change Dashboard")
-    st.markdown("Explore 270 years of real climate data across 242 countries")
+    st.markdown("Explore 270 years of real climate data across 190 countries")
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Total Countries", df['Country'].nunique())
