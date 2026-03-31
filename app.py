@@ -165,7 +165,7 @@ if page == "Dashboard":
 
     st.markdown("---")
 
-    st.subheader("🗺️ Average Temperature by Country")
+    st.subheader("Average Temperature by Country")
     country_avg = df.groupby("Country")["AverageTemperature"].mean().reset_index()
     fig6 = px.choropleth(
         country_avg,
