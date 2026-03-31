@@ -10,6 +10,7 @@ import warnings
 import os
 import gdown
 import requests
+import base64
 
 warnings.filterwarnings("ignore")
 
@@ -19,8 +20,7 @@ st.set_page_config(
     #page_icon="🌍",
     layout="wide")
 
-import base64
-
+# after set_page_config
 def add_bg_image(image_file):
     with open(image_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
@@ -29,7 +29,7 @@ def add_bg_image(image_file):
         f"""
         <style>
         .stApp {{
-            background-image: url("/Users/viveksharma/Desktop/ClimateAIApp;base64,{encoded}");
+            background-image: url("data:image/jpg;base64,{encoded}");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -40,7 +40,7 @@ def add_bg_image(image_file):
         unsafe_allow_html=True
     )
 
-# call the function with your image
+# call function
 add_bg_image("project_bg.jpg")
 
 # load data
