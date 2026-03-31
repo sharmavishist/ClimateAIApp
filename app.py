@@ -373,20 +373,68 @@ elif page == "Temperature Predictor":
 
 elif page == "Country Report":
 
-    st.title("Country Climate Report")
+    st.markdown("""
+        <style>.stApp { background-color: #f8f0ff; }</style>
+    """, unsafe_allow_html=True)
+
+    st.title("📄 Country Climate Report")
     st.markdown("Generate a full AI climate report for any country!")
 
+    # country selection
     country = st.selectbox("Select Country:", sorted(df['Country'].unique()))
+
+    # year range slider
+    st.markdown("**Select Year Range:**")
+    year_range = st.slider(
+        "Year Range",
+        min_value=int(df['Year'].min()),   # 1743
+        max_value=int(df['Year'].max()),   # 2013
+        value=(int(df['Year'].min()), int(df['Year'].max())),  # default full range
+        step=1
+    )
+
+    # season dropdown
+    season = st.selectbox(
+        "Select Season (optional):",
+        ["All Seasons", "Summer", "Spring", "Autumn", "Winter"]
+    )
 
     if st.button("Generate Report"):
         with st.spinner("Generating report..."):
 
+            # filter data for selected country
             country_data = df[df['Country'] == country]
 
+            # filter by year range
+            country_data = country_data[
+                (country_data['Year'] >= year_range[0]) &
+                (country_data['Year'] <= year_range[1])
+            ]
+
+            # filter by season if selected
+            if season != "All Seasons":
+                country_data = country_data[country_data['Season'] == season]
+
+            # check if data exists
+            if len(country_data) == 0:
+                st.warning("No data found for selected filters!")
+                st.stop()
+
+            # calculate statistics
             avg_temp = country_data['AverageTemperature'].mean()
             max_temp = country_data['AverageTemperature'].max()
             min_temp = country_data['AverageTemperature'].min()
 
+            # find when max and min occurred
+            max_temp_row = country_data[country_data['AverageTemperature'] == max_temp].iloc[0]
+            min_temp_row = country_data[country_data['AverageTemperature'] == min_temp].iloc[0]
+
+            max_temp_year = int(max_temp_row['Year'])
+            max_temp_month = int(max_temp_row['Month'])
+            min_temp_year = int(min_temp_row['Year'])
+            min_temp_month = int(min_temp_row['Month'])
+
+            # month names
             month_names = {
                 1:"January", 2:"February", 3:"March",
                 4:"April", 5:"May", 6:"June",
@@ -394,54 +442,128 @@ elif page == "Country Report":
                 10:"October", 11:"November", 12:"December"
             }
 
+            # hottest and coldest months
             hottest_month_num = int(country_data.groupby('Month')['AverageTemperature'].mean().idxmax())
             coldest_month_num = int(country_data.groupby('Month')['AverageTemperature'].mean().idxmin())
             hottest_month = month_names[hottest_month_num]
             coldest_month = month_names[coldest_month_num]
 
-            early_data = country_data[country_data['Year'] < 1900]['AverageTemperature']
-            recent_data = country_data[country_data['Year'] > 1980]['AverageTemperature']
+            # warming trend
+            mid_year = (year_range[0] + year_range[1]) // 2
+            early_avg = country_data[country_data['Year'] <= mid_year]['AverageTemperature'].mean()
+            recent_avg = country_data[country_data['Year'] > mid_year]['AverageTemperature'].mean()
+            warming = recent_avg - early_avg
+            warming_text = f"{warming:.2f}°C"
 
-            if len(early_data) > 0 and len(recent_data) > 0:
-                warming = recent_data.mean() - early_data.mean()
-                warming_text = f"{warming:.2f}°C since 1900"
-            else:
-                warming_text = "Not available (limited data)"
-
-            '''col1, col2, col3, col4 = st.columns(4)
-            col1.metric("Avg Temperature", f"{avg_temp:.1f}°C")
-            col2.metric("Hottest Month", hottest_month)
-            col3.metric("Coldest Month", coldest_month)
-            col4.metric("Warming Trend", warming_text)'''
+            # ── KPI CARDS ──
+            st.markdown("---")
             col1, col2, col3, col4 = st.columns(4)
 
             with col1:
                 st.markdown("**🌡️ Avg Temperature**")
-                st.markdown(f"#### {avg_temp:.1f}°C")
+                st.markdown(f"### {avg_temp:.1f}°C")
 
             with col2:
                 st.markdown("**🔥 Hottest Month**")
-                st.markdown(f"#### {hottest_month}")
+                st.markdown(f"### {hottest_month}")
 
             with col3:
                 st.markdown("**❄️ Coldest Month**")
-                st.markdown(f"#### {coldest_month}")
+                st.markdown(f"### {coldest_month}")
 
             with col4:
                 st.markdown("**📈 Warming Trend**")
                 st.markdown(f"#### {warming_text}")
 
+            st.markdown("---")
+
+            # ── LINE CHART ──
+            st.subheader(f"📈 Temperature Trend for {country} ({year_range[0]} - {year_range[1]})")
+
+            # group by year for line chart
+            country_yearly = country_data.groupby('Year')['AverageTemperature'].mean().reset_index()
+
+            fig = px.line(
+                country_yearly,
+                x="Year",
+                y="AverageTemperature",
+                color_discrete_sequence=["steelblue"],
+                title=f"{country} Temperature Trend ({season})"
+            )
+
+            # add max temp marker
+            fig.add_scatter(
+                x=[max_temp_year],
+                y=[max_temp],
+                mode="markers+text",
+                marker=dict(color="red", size=10),
+                text=[f"Max: {max_temp:.1f}°C"],
+                textposition="top center",
+                name="Max Temp"
+            )
+
+            # add min temp marker
+            fig.add_scatter(
+                x=[min_temp_year],
+                y=[min_temp],
+                mode="markers+text",
+                marker=dict(color="blue", size=10),
+                text=[f"Min: {min_temp:.1f}°C"],
+                textposition="bottom center",
+                name="Min Temp"
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+
+            # ── MIN MAX INFO ──
+            st.markdown("---")
+            st.subheader("🌡️ Temperature Extremes")
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.error(f"""
+                **🔥 Highest Temperature**
+                - Temperature: **{max_temp:.1f}°C**
+                - Year: **{max_temp_year}**
+                - Month: **{month_names[max_temp_month]}**
+                """)
+
+            with col2:
+                st.info(f"""
+                **❄️ Lowest Temperature**
+                - Temperature: **{min_temp:.1f}°C**
+                - Year: **{min_temp_year}**
+                - Month: **{month_names[min_temp_month]}**
+                """)
+
+            st.markdown("---")
+
+            # ── AI REPORT ──
+            st.subheader("🤖 AI Climate Analysis")
+
             report_prompt = f"""
             Generate a professional climate analysis report for {country}.
+
+            Filters applied:
+            - Year range: {year_range[0]} to {year_range[1]}
+            - Season filter: {season}
+
             Statistics:
             - Average temperature: {avg_temp:.1f}°C
-            - Highest recorded: {max_temp:.1f}°C
-            - Lowest recorded: {min_temp:.1f}°C
+            - Highest recorded: {max_temp:.1f}°C in {month_names[max_temp_month]} {max_temp_year}
+            - Lowest recorded: {min_temp:.1f}°C in {month_names[min_temp_month]} {min_temp_year}
             - Hottest month: {hottest_month}
             - Coldest month: {coldest_month}
-            - Warming trend: {warming_text}
-            - Data range: {int(country_data['Year'].min())} to {int(country_data['Year'].max())}
-            Write a 5-6 sentence professional climate report.
+            - Warming trend: {warming_text} change from first half to second half of selected period
+            - Data range: {year_range[0]} to {year_range[1]}
+
+            Write a 5-6 sentence professional climate report covering:
+            1. Overall climate summary for selected period
+            2. Seasonal patterns
+            3. Notable temperature extremes and when they occurred
+            4. Warming trend analysis
+            5. Climate outlook
             """
 
             response = groq_client.chat.completions.create(
@@ -453,22 +575,17 @@ elif page == "Country Report":
             st.success("**AI Generated Report:**")
             st.write(response.choices[0].message.content)
 
-            st.subheader(f"Temperature Trend for {country}")
-            country_yearly = df[df['Country'] == country].groupby('Year')['AverageTemperature'].mean().reset_index()
-            fig = px.line(
-                country_yearly, x="Year", y="AverageTemperature",
-                color_discrete_sequence=["steelblue"],
-                title=f"{country} Temperature Trend"
-            )
-            st.plotly_chart(fig, use_container_width=True)
-
-            st.subheader(f"Monthly Pattern for {country}")
+            # ── MONTHLY PATTERN CHART ──
+            st.markdown("---")
+            st.subheader(f"📅 Monthly Pattern for {country}")
             country_monthly = country_data.groupby('Month')['AverageTemperature'].mean().reset_index()
             country_monthly['Month Name'] = country_monthly['Month'].map(month_names)
             fig2 = px.bar(
-                country_monthly, x="Month Name", y="AverageTemperature",
+                country_monthly,
+                x="Month Name",
+                y="AverageTemperature",
                 color="AverageTemperature",
                 color_continuous_scale="RdYlBu_r",
-                title=f"{country} Monthly Temperature Pattern"
+                title=f"{country} Monthly Temperature Pattern ({year_range[0]}-{year_range[1]})"
             )
             st.plotly_chart(fig2, use_container_width=True)
