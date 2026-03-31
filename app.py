@@ -19,6 +19,30 @@ st.set_page_config(
     #page_icon="🌍",
     layout="wide")
 
+import base64
+
+def add_bg_image(image_file):
+    with open(image_file, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+    
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("/Users/viveksharma/Desktop/ClimateAIApp;base64,{encoded}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+# call the function with your image
+add_bg_image("project_bg.jpg")
+
 # load data
 @st.cache_data
 def load_data():
