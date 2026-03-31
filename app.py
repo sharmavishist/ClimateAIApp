@@ -373,7 +373,7 @@ elif page == "Temperature Predictor":
 
 elif page == "Country Report":
 
-    st.title("📄 Country Climate Report")
+    st.title("Country Climate Report")
     st.markdown("Generate a full AI climate report for any country!")
 
     # country selection
