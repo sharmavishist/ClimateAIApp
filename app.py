@@ -373,10 +373,6 @@ elif page == "Temperature Predictor":
 
 elif page == "Country Report":
 
-    st.markdown("""
-        <style>.stApp { background-color: #f8f0ff; }</style>
-    """, unsafe_allow_html=True)
-
     st.title("📄 Country Climate Report")
     st.markdown("Generate a full AI climate report for any country!")
 
