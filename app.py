@@ -143,10 +143,10 @@ if page == "Dashboard":
             season_avg, x="Season", y="AverageTemperature",
             color="Season",
             color_discrete_map={
-                "Summer": "#FF8765",
-                "Spring": "#fc8ea2",
-                "Autumn": "#9D96FD",
-                "Winter": "#A3ACFF"
+                "Summer": "#FF7853",
+                "Spring": "#ff6984",
+                "Autumn": "#976AFF",
+                "Winter": "#6D7CFF"
             }
         )
         st.plotly_chart(fig4, use_container_width=True)
@@ -163,7 +163,7 @@ if page == "Dashboard":
         fig5 = px.line(
             monthly_avg, x="Month Name", y="AverageTemperature",
             markers=True,
-            color_discrete_sequence=["darkorange"]
+            color_continuous_scale="Reds"
         )
         st.plotly_chart(fig5, use_container_width=True)
 
