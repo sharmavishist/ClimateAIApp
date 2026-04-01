@@ -163,7 +163,7 @@ if page == "Dashboard":
         fig5 = px.line(
             monthly_avg, x="Month Name", y="AverageTemperature",
             markers=True,
-            color_discrete_sequence=["Reds"]
+            color_discrete_sequence=["Red"]
         )
         st.plotly_chart(fig5, use_container_width=True)
 
