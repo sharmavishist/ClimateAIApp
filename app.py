@@ -143,10 +143,10 @@ if page == "Dashboard":
             season_avg, x="Season", y="AverageTemperature",
             color="Season",
             color_discrete_map={
-                "Summer": "red",
-                "Spring": "green",
-                "Autumn": "orange",
-                "Winter": "blue"
+                "Summer": "#E07A5F",
+                "Spring": "#81B29A",
+                "Autumn": "#F2CC8F",
+                "Winter": "#3D405B"
             }
         )
         st.plotly_chart(fig4, use_container_width=True)
