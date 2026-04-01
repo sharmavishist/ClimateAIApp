@@ -34,6 +34,33 @@ st.markdown("""
         color: white !important;
     }
     
+    /* fix white block at top */
+    [data-testid="stHeader"] {
+        background-color: #0d0f1a;
+    }
+    
+    /* fix top toolbar */
+    [data-testid="stToolbar"] {
+        background-color: #0d0f1a;
+    }
+
+    /* fix white block above sidebar */
+    [data-testid="stSidebarNav"] {
+        background-color: #4a4854;
+    }
+    
+    /* fix main content block */
+    [data-testid="block-container"] {
+        background-color: #0d0f1a;
+    }
+
+    /* fix metric cards */
+    [data-testid="stMetric"] {
+        background-color: #1a1d2e;
+        border-radius: 10px;
+        padding: 1rem;
+    }
+
     /* remove anchor links */
     h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
         display: none !important;
@@ -124,6 +151,12 @@ if page == "Dashboard":
     fig1.update_layout(xaxis_title="Year", yaxis_title="Average Temperature (°C)")
     st.plotly_chart(fig1, use_container_width=True)
 
+    fig1.update_layout(
+    paper_bgcolor="#0d0f1a",   # outer background
+    plot_bgcolor="#0d0f1a",    # inner plot background
+    font=dict(color="white")   # white text on charts
+)
+
     st.markdown("---")
 
     col1, col2 = st.columns(2)
@@ -140,6 +173,12 @@ if page == "Dashboard":
         fig2.update_layout(yaxis=dict(autorange="reversed"))
         st.plotly_chart(fig2, use_container_width=True)
 
+        fig2.update_layout(
+        paper_bgcolor="#0d0f1a",   # outer background
+        plot_bgcolor="#0d0f1a",    # inner plot background
+        font=dict(color="white")   # white text on charts
+)
+
     with col2:
         st.subheader("Top 10 Coldest Countries")
         coldest = df.groupby("Country")["AverageTemperature"].mean().sort_values().head(10).reset_index()
@@ -151,6 +190,12 @@ if page == "Dashboard":
         )
         fig3.update_layout(yaxis=dict(autorange="reversed"))
         st.plotly_chart(fig3, use_container_width=True)
+        
+        fig3.update_layout(
+        paper_bgcolor="#0d0f1a",   # outer background
+        plot_bgcolor="#0d0f1a",    # inner plot background
+        font=dict(color="white")   # white text on charts
+)
 
     st.markdown("---")
 
@@ -170,6 +215,12 @@ if page == "Dashboard":
             }
         )
         st.plotly_chart(fig4, use_container_width=True)
+        
+        fig4.update_layout(
+        paper_bgcolor="#0d0f1a",   # outer background
+        plot_bgcolor="#0d0f1a",    # inner plot background
+        font=dict(color="white")   # white text on charts
+)
 
     with col2:
         st.subheader("Monthly Temperature Pattern")
@@ -186,6 +237,12 @@ if page == "Dashboard":
         )
         st.plotly_chart(fig5, use_container_width=True)
 
+        fig5.update_layout(
+        paper_bgcolor="#0d0f1a",   # outer background
+        plot_bgcolor="#0d0f1a",    # inner plot background
+        font=dict(color="white")   # white text on charts
+)
+
     st.markdown("---")
 
     st.subheader("Average Temperature by Country")
@@ -199,6 +256,12 @@ if page == "Dashboard":
         title="Global Temperature Map"
     )
     st.plotly_chart(fig6, use_container_width=True)
+
+    fig6.update_layout(
+    paper_bgcolor="#0d0f1a",   # outer background
+    plot_bgcolor="#0d0f1a",    # inner plot background
+    font=dict(color="white")   # white text on charts
+)
 
 # ─────────────────────────────────────────
 # PAGE 2 — CLIMATE CHATBOT
@@ -390,6 +453,12 @@ elif page == "Temperature Predictor":
 
             st.plotly_chart(fig, use_container_width=True)
 
+            fig.update_layout(
+            paper_bgcolor="#0d0f1a",   # outer background
+            plot_bgcolor="#0d0f1a",    # inner plot background
+            font=dict(color="white")   # white text on charts
+)
+
 # ─────────────────────────────────────────
 # PAGE 4 — COUNTRY REPORT
 # ─────────────────────────────────────────
@@ -534,6 +603,12 @@ elif page == "Country Report":
 
             st.plotly_chart(fig, use_container_width=True)
 
+            fig.update_layout(
+            paper_bgcolor="#0d0f1a",   # outer background
+            plot_bgcolor="#0d0f1a",    # inner plot background
+            font=dict(color="white")   # white text on charts
+)
+
             # ── MIN MAX INFO ──
             st.markdown("---")
             st.subheader("🌡️ Temperature Extremes")
@@ -608,6 +683,12 @@ elif page == "Country Report":
                 title=f"{country} Monthly Temperature Pattern ({year_range[0]}-{year_range[1]})"
             )
             st.plotly_chart(fig2, use_container_width=True)
+
+            fig2.update_layout(
+            paper_bgcolor="#0d0f1a",   # outer background
+            plot_bgcolor="#0d0f1a",    # inner plot background
+            font=dict(color="white")   # white text on charts
+)
 
 # 1) paste : cd ~/Desktop/ClimateAIApp
 # 2) if need to make change :
