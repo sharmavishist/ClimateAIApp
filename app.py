@@ -17,7 +17,29 @@ st.set_page_config(
     #page_icon="🌍",
     layout="wide")
 
-
+st.markdown("""
+    <style>
+    /* main background */
+    .stApp {
+        background-color: #0d0f1a;
+    }
+    
+    /* sidebar background */
+    [data-testid="stSidebar"] {
+        background-color: #4a4854;
+    }
+    
+    /* all text white */
+    * {
+        color: white !important;
+    }
+    
+    /* remove anchor links */
+    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+        display: none !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # load data
 @st.cache_data
@@ -25,6 +47,7 @@ def load_data():
     df = pd.read_csv("climate_predictions_final.csv")
     df.dropna(inplace=True)
     return df
+    
 
 @st.cache_resource
 def load_model():
@@ -585,3 +608,9 @@ elif page == "Country Report":
                 title=f"{country} Monthly Temperature Pattern ({year_range[0]}-{year_range[1]})"
             )
             st.plotly_chart(fig2, use_container_width=True)
+
+# 1) paste : cd ~/Desktop/ClimateAIApp
+# 2) if need to make change :
+#   git add .
+#   git commit -m "add year slider and season filter to country report"
+#   git push
