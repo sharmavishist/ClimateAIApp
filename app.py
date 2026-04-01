@@ -16,58 +16,7 @@ st.set_page_config(
     page_title="Climate Change AI Agent",
     #page_icon="🌍",
     layout="wide")
-'''
-st.markdown("""
-    <style>
-    /* main background */
-    .stApp {
-        background-color: #0d0f1a;
-    }
-    
-    /* sidebar background */
-    [data-testid="stSidebar"] {
-        background-color: #4a4854;
-    }
-    
-    /* all text white */
-    * {
-        color: white !important;
-    }
-    
-    /* fix white block at top */
-    [data-testid="stHeader"] {
-        background-color: #0d0f1a;
-    }
-    
-    /* fix top toolbar */
-    [data-testid="stToolbar"] {
-        background-color: #0d0f1a;
-    }
 
-    /* fix white block above sidebar */
-    [data-testid="stSidebarNav"] {
-        background-color: #4a4854;
-    }
-    
-    /* fix main content block */
-    [data-testid="block-container"] {
-        background-color: #0d0f1a;
-    }
-
-    /* fix metric cards */
-    [data-testid="stMetric"] {
-        background-color: #1a1d2e;
-        border-radius: 10px;
-        padding: 1rem;
-    }
-
-    /* remove anchor links */
-    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-        display: none !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-'''
 # load data
 @st.cache_data
 def load_data():
@@ -149,12 +98,6 @@ if page == "Dashboard":
         color_discrete_sequence=["firebrick"]
     )
     fig1.update_layout(xaxis_title="Year", yaxis_title="Average Temperature (°C)")
-    '''
-    fig1.update_layout(
-    paper_bgcolor="#0d0f1a",   # outer background
-    plot_bgcolor="#0d0f1a",    # inner plot background
-    font=dict(color="white"))   # white text on charts
-    '''
     st.plotly_chart(fig1, use_container_width=True)
 
 
@@ -172,12 +115,6 @@ if page == "Dashboard":
             color_continuous_scale="Reds"
         )
         fig2.update_layout(yaxis=dict(autorange="reversed"))
-        '''
-        fig2.update_layout(
-        paper_bgcolor="#0d0f1a",   # outer background
-        plot_bgcolor="#0d0f1a",    # inner plot background
-        font=dict(color="white"))   # white text on charts
-        '''
         st.plotly_chart(fig2, use_container_width=True)
 
 
@@ -191,12 +128,6 @@ if page == "Dashboard":
             color_continuous_scale="Blues_r"
         )
         fig3.update_layout(yaxis=dict(autorange="reversed"))
-        '''
-        fig3.update_layout(
-        paper_bgcolor="#0d0f1a",   # outer background
-        plot_bgcolor="#0d0f1a",    # inner plot background
-        font=dict(color="white"))   # white text on charts
-        '''
         st.plotly_chart(fig3, use_container_width=True)
 
 
@@ -218,12 +149,6 @@ if page == "Dashboard":
                 "Winter": "blue"
             }
         )
-        '''
-        fig4.update_layout(
-        paper_bgcolor="#0d0f1a",   # outer background
-        plot_bgcolor="#0d0f1a",    # inner plot background
-        font=dict(color="white"))   # white text on charts
-        '''
         st.plotly_chart(fig4, use_container_width=True)
 
 
@@ -240,13 +165,6 @@ if page == "Dashboard":
             markers=True,
             color_discrete_sequence=["darkorange"]
         )
-        '''
-
-        fig5.update_layout(
-        paper_bgcolor="#0d0f1a",   # outer background
-        plot_bgcolor="#0d0f1a",    # inner plot background
-        font=dict(color="white"))   # white text on charts
-        '''
         st.plotly_chart(fig5, use_container_width=True)
 
 
@@ -262,12 +180,6 @@ if page == "Dashboard":
         color_continuous_scale="RdYlBu_r",
         title="Global Temperature Map"
     )
-    '''
-    fig6.update_layout(
-    paper_bgcolor="#0d0f1a",   # outer background
-    plot_bgcolor="#0d0f1a",    # inner plot background
-    font=dict(color="white"))   # white text on charts
-    '''
     st.plotly_chart(fig6, use_container_width=True)
 
 
@@ -458,12 +370,6 @@ elif page == "Temperature Predictor":
                 line_color="red",
                 annotation_text=f"{year} ({temperature:.1f}°C)"
             )
-            '''
-            fig.update_layout(
-            paper_bgcolor="#0d0f1a",   # outer background
-            plot_bgcolor="#0d0f1a",    # inner plot background
-            font=dict(color="white"))   # white text on charts
-            '''
             st.plotly_chart(fig, use_container_width=True)
 
 
@@ -608,13 +514,6 @@ elif page == "Country Report":
                 textposition="bottom center",
                 name="Min Temp"
             )
-            '''
-            fig.update_layout(
-            paper_bgcolor="#0d0f1a",   # outer background
-            plot_bgcolor="#0d0f1a",    # inner plot background
-            font=dict(color="white"))   # white text on charts
-            '''
-
             st.plotly_chart(fig, use_container_width=True)
 
             # ── MIN MAX INFO ──
@@ -690,14 +589,6 @@ elif page == "Country Report":
                 color_continuous_scale="RdYlBu_r",
                 title=f"{country} Monthly Temperature Pattern ({year_range[0]}-{year_range[1]})"
             )
-
-            '''fig2.update_layout(
-            paper_bgcolor="#0d0f1a",   # outer background
-            plot_bgcolor="#0d0f1a",    # inner plot background
-            font=dict(color="white"))  # white text on charts
-            '''
-
-
             st.plotly_chart(fig2, use_container_width=True)
 
 
