@@ -1,4 +1,6 @@
-# 🌍 Climate Change Analysis and Prediction Using Machine Learning and AI
+# 🌍 CLIMATE AI
+
+Climate Change Analysis and Prediction Using Machine Learning and AI
 
 An end-to-end intelligent Climate Change Analysis and Prediction System 
 built using Machine Learning and Artificial Intelligence — analyzing 
