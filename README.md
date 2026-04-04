@@ -129,7 +129,7 @@ streamlit run app.py
   "France" and "France (Europe)" — cleaned to 190 unique countries
 - **Synthetic Data** — Initial dataset was synthetic — switched to real 
   Berkeley Earth dataset improving accuracy from negative R² to 98%
-- **Model File Size** — Trained model was 1.8GB — solved using Google Drive
+- **Model File Size** — Trained model was 920.07MB — solved using Google Drive
   for public model hosting
 - **API Credits** — Switched from Claude/Gemini to Groq API for free access
   to LLaMA 3.3 70B model
