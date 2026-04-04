@@ -174,7 +174,6 @@ streamlit run app.py
 ![Dashboard2](Screenshots/Dashboard2.png)
 ![Dashboard3](Screenshots/Dashboard3.png)
 ![Dashboard4](Screenshots/Dashboard4.png)
-![Dashboard5](Screenshots/Dashboard5.png)
 ![Dashboard6](Screenshots/Dashboard6.png)
 ![Dashboard7](Screenshots/Dashboard7.png)
 ![Dashboard8](Screenshots/Dashboard8.png)
