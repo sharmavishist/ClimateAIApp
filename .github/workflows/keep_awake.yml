@@ -2,7 +2,7 @@ name: Keep Alive
 
 on:
   schedule:
-    - cron: '0 */10 * * *'  # runs every 10 hours
+    - cron: '0 */6 * * *'  # runs every 10 hours
   workflow_dispatch:          # allows manual trigger
 
 jobs:
@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Ping Streamlit App
         run: |
-          curl -s -o /dev/null -w "%{http_code}" https://climateaiapp-byvishistsharma.streamlit.app
+          curl -L -A /dev/null -w "%{http_code}" https://climateaiapp-byvishistsharma.streamlit.app
