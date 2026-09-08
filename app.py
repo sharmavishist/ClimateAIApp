@@ -230,7 +230,7 @@ elif page == "Climate Chatbot":
                 """
 
                 response = groq_client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
+                    model="llama-3.1-8b-instant",
                     messages=[{"role": "user", "content": data_summary + "\n\nUser question: " + question}],
                     max_tokens=500
                 )
@@ -344,7 +344,7 @@ elif page == "Temperature Predictor":
                 """
 
                 response = groq_client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
+                    model="llama-3.1-8b-instant",
                     messages=[{"role": "user", "content": explanation_prompt}],
                     max_tokens=300
                 )
@@ -568,7 +568,7 @@ elif page == "Country Report":
             """
 
             response = groq_client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model="llama-3.1-8b-instant",
                 messages=[{"role": "user", "content": report_prompt}],
                 max_tokens=500
             )
